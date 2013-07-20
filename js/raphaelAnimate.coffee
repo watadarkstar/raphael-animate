@@ -14,7 +14,7 @@ jQuery ->
         animations: {}
         debug: true
         key: "animation1"
-        looping: true
+        looping: false
 
     # current state
     state = ''
@@ -26,10 +26,13 @@ jQuery ->
     animations = {}
 
     # looping
-    looping = true
+    looping = null
 
     # key of animation
     key = ""
+
+    # current size of window
+    current_size = null
 
     # plugin settings
     @settings = {}
@@ -67,12 +70,18 @@ jQuery ->
         ani.step = bind(step, ani)
         ani.play = bind(play, ani)
 
-        self = ani
-        for layer, i in ani.layers
-          layer.paper.setSize(layer.container.width(), layer.container.height())
+        if (has(sizes, key))
+          ani.set_size = bind(set_size, ani)
+          ani.sizes = sizes[key]
+          if (current_size)
+            ani.set_size(current_size)
 
         ani.step_once()
         $el.data('ani', ani)
+
+        # TODO remove this and do window resizing using match queries
+        current_size = "1120"
+        size_animations()
 
     getAnimation = (key) =>
       animations[key]
@@ -85,15 +94,11 @@ jQuery ->
       for layer, i in this.layers
         if (layer.frames[self.tick])
           layer.paper.clear()
-
           for shape in layer.frames[self.tick]
-            # adjust colors to match current brand color
-            attrs = extend({"stroke-width":"0","stroke":"none"}, shape.attrs)
+            attrs = $.extend({"stroke-width":"0","stroke":"none"}, if shape.attrs? then shape.attrs else shape)
             layer.paper
                   .path(shape.path)
                   .attr(attrs)
-                  .transform("s.70 .70 200 5")
-          
 
       this.tick++
       if this.tick > (this.nFrames - 1)
@@ -115,6 +120,35 @@ jQuery ->
     play = ->
       this.playing = true
       requestAnimationFrame(this.step)
+
+    size_animations = =>
+      $el = @$el
+      ani = $el.data('ani')
+      if (ani && ani.set_size)
+        ani.set_size(current_size)
+
+    set_size = (size) ->
+      s = this.sizes[size];
+      if s?
+        for layer, i in this.layers
+          layer.paper.setSize(layer.container.width(), layer.container.height())
+          layer.paper.setViewBox(s.x, s.y, this.canvas.width.replace(/px$/, '') * s.m, this.canvas.height.replace(/px$/, '') * s.m, false)
+
+    ## -------------- event handlers --------------
+
+    bindEvents = () =>
+      @$el.on 'mouseover', 'path', (e) =>
+        $el = $(e.currentTarget)
+        $el.css
+          webkitAnimation: "wobblepath 0.3s ease-in-out 0s infinite alternate"
+
+      @$el.on 'mouseout', 'path', (e) =>
+        $el = $(e.currentTarget)
+        delay 300, ->
+          $el.css
+            webkitAnimation: "none"
+
+      $(window).on 'statechangecomplete', =>
 
     ## -------------- helper methods --------------
 
@@ -144,13 +178,7 @@ jQuery ->
           return result
         return self
 
-    extend = (obj) =>
-      slice = Array.prototype.slice
-      for source in slice.call(arguments, 1)
-        if source
-          for prop of source
-            obj[prop] = source[prop]
-      return obj
+    delay = (ms, func) -> setTimeout func, ms
 
     ## -------------- public methods -------------- 
 
@@ -205,6 +233,7 @@ jQuery ->
       if (ani)
           ani.play()
 
+      bindEvents()
       @setState 'ready'
 
     # initialise the plugin

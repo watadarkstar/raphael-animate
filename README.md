@@ -36,9 +36,13 @@ Build and minify plugin:
 
 	grunt build
 
-Running Test Scirpt (for Travis CI)
+Running Test Scirpt (for Travis CI):
 
 	npm test
+
+Converting a SVG for use in vectors.js:
+
+	node rappar.js html5.svg
 
 ## Website Url
 

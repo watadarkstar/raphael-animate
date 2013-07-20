@@ -1,24 +1,25 @@
 (function() {
   jQuery(function() {
     $.raphaelAnimate = function(el, options) {
-      var FPS, animations, bind, extend, getAnimation, has, initAnimations, isFunction, key, log, looping, play, state, step, step_once,
+      var FPS, animations, bind, bindEvents, current_size, delay, getAnimation, has, initAnimations, isFunction, key, log, looping, play, set_size, size_animations, state, step, step_once,
         _this = this;
       $.raphaelAnimate.prototype.defaults = {
         FPS: 50,
         animations: {},
         debug: true,
         key: "animation1",
-        looping: true
+        looping: false
       };
       state = '';
       FPS = 50;
       animations = {};
-      looping = true;
+      looping = null;
       key = "";
+      current_size = null;
       this.settings = {};
       this.$el = $(el);
       initAnimations = function() {
-        var $canvas, $el, ani, i, layer, self, _i, _j, _len, _len1, _ref, _ref1;
+        var $canvas, $el, ani, i, layer, _i, _len, _ref;
         _this.setAnimations(_this.getSetting("animations"));
         _this.setKey(_this.getSetting("key"));
         $el = _this.$el;
@@ -43,14 +44,17 @@
           ani.step_once = bind(step_once, ani);
           ani.step = bind(step, ani);
           ani.play = bind(play, ani);
-          self = ani;
-          _ref1 = ani.layers;
-          for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
-            layer = _ref1[i];
-            layer.paper.setSize(layer.container.width(), layer.container.height());
+          if (has(sizes, key)) {
+            ani.set_size = bind(set_size, ani);
+            ani.sizes = sizes[key];
+            if (current_size) {
+              ani.set_size(current_size);
+            }
           }
           ani.step_once();
-          return $el.data('ani', ani);
+          $el.data('ani', ani);
+          current_size = "1120";
+          return size_animations();
         }
       };
       getAnimation = function(key) {
@@ -67,11 +71,11 @@
             _ref1 = layer.frames[self.tick];
             for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
               shape = _ref1[_j];
-              attrs = extend({
+              attrs = $.extend({
                 "stroke-width": "0",
                 "stroke": "none"
-              }, shape.attrs);
-              layer.paper.path(shape.path).attr(attrs).transform("s.70 .70 200 5");
+              }, shape.attrs != null ? shape.attrs : shape);
+              layer.paper.path(shape.path).attr(attrs);
             }
           }
         }
@@ -98,6 +102,47 @@
       play = function() {
         this.playing = true;
         return requestAnimationFrame(this.step);
+      };
+      size_animations = function() {
+        var $el, ani;
+        $el = _this.$el;
+        ani = $el.data('ani');
+        if (ani && ani.set_size) {
+          return ani.set_size(current_size);
+        }
+      };
+      set_size = function(size) {
+        var i, layer, s, _i, _len, _ref, _results;
+        s = this.sizes[size];
+        if (s != null) {
+          _ref = this.layers;
+          _results = [];
+          for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+            layer = _ref[i];
+            layer.paper.setSize(layer.container.width(), layer.container.height());
+            _results.push(layer.paper.setViewBox(s.x, s.y, this.canvas.width.replace(/px$/, '') * s.m, this.canvas.height.replace(/px$/, '') * s.m, false));
+          }
+          return _results;
+        }
+      };
+      bindEvents = function() {
+        _this.$el.on('mouseover', 'path', function(e) {
+          var $el;
+          $el = $(e.currentTarget);
+          return $el.css({
+            webkitAnimation: "wobblepath 0.3s ease-in-out 0s infinite alternate"
+          });
+        });
+        _this.$el.on('mouseout', 'path', function(e) {
+          var $el;
+          $el = $(e.currentTarget);
+          return delay(300, function() {
+            return $el.css({
+              webkitAnimation: "none"
+            });
+          });
+        });
+        return $(window).on('statechangecomplete', function() {});
       };
       log = function(msg) {
         if (_this.getSetting("debug")) {
@@ -136,19 +181,8 @@
           return self;
         };
       };
-      extend = function(obj) {
-        var prop, slice, source, _i, _len, _ref;
-        slice = Array.prototype.slice;
-        _ref = slice.call(arguments, 1);
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          source = _ref[_i];
-          if (source) {
-            for (prop in source) {
-              obj[prop] = source[prop];
-            }
-          }
-        }
-        return obj;
+      delay = function(ms, func) {
+        return setTimeout(func, ms);
       };
       this.setFPS = function(_FPS) {
         return FPS = _FPS;
@@ -199,6 +233,7 @@
         if (ani) {
           ani.play();
         }
+        bindEvents();
         return this.setState('ready');
       };
       this.init();
