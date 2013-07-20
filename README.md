@@ -81,6 +81,6 @@ Developed by Adrian Carolli
 + [@wataweb](http://twitter.com/wataweb)
 + [Github Profile](http://github.com/watadarkstar)
 
-Originally authored by
+## Originally authored by
 
 + [PLAYGROUNDINC.COM](http://playgroundinc.com/)
