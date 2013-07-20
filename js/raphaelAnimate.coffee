@@ -19,6 +19,9 @@ jQuery ->
     # current state
     state = ''
 
+    # desired FPS of animation
+    FPS = 50
+
     # animations to play
     animations = {}
 
@@ -26,7 +29,7 @@ jQuery ->
     looping = true
 
     # key of animation
-    key = "animation1"
+    key = ""
 
     # plugin settings
     @settings = {}
@@ -42,7 +45,7 @@ jQuery ->
       $el = @$el
 
       if has(animations, key)
-        $el.data('initialized', true)#.addClass('replaced');
+        $el.data('initialized', true).addClass('replaced');
         ani = getAnimation(key)
         ani.nFrames = 0
 
@@ -58,10 +61,7 @@ jQuery ->
         ani.tick = 0
 
         ani.looping = looping
-        if (ani.looping)
-            $el.addClass('looping');
-        else
-            $el.addClass('play-once');
+        $el.addClass('looping-'+ani.looping)
 
         ani.step_once = bind(step_once, ani)
         ani.step = bind(step, ani)
@@ -69,7 +69,7 @@ jQuery ->
 
         self = ani
         for layer, i in ani.layers
-            layer.paper.setSize(layer.container.width(), layer.container.height())
+          layer.paper.setSize(layer.container.width(), layer.container.height())
 
         ani.step_once()
         $el.data('ani', ani)
@@ -77,14 +77,44 @@ jQuery ->
     getAnimation = (key) =>
       animations[key]
 
-    # TODO implement
-    step_once = =>
+    step_once = ->
+      # only draw a frame if the data exists
+      # it's possible that the frame is null, in which case we're just holding the previous frame
+      self = this
 
-    # TODO implement
-    step = (timestamp) =>
+      for layer, i in this.layers
+        if (layer.frames[self.tick])
+          layer.paper.clear()
 
-    # TODO implement
-    play = =>
+          for shape in layer.frames[self.tick]
+            # adjust colors to match current brand color
+            attrs = extend({"stroke-width":"0","stroke":"none"}, shape.attrs)
+            layer.paper
+                  .path(shape.path)
+                  .attr(attrs)
+                  .transform("s.70 .70 200 5")
+          
+
+      this.tick++
+      if this.tick > (this.nFrames - 1)
+        this.tick = 0;
+        if !this.looping
+          this.playing = false;
+          this.finished = true;
+
+      this.lastFrame = Date.now();
+
+    step = (timestamp) ->
+      now = Date.now()
+      if ((now - this.lastFrame) > (1000 / FPS))
+        this.step_once()
+
+      if this.playing
+        requestAnimationFrame(this.step)
+
+    play = ->
+      this.playing = true
+      requestAnimationFrame(this.step)
 
     ## -------------- helper methods --------------
 
@@ -114,7 +144,18 @@ jQuery ->
           return result
         return self
 
+    extend = (obj) =>
+      slice = Array.prototype.slice
+      for source in slice.call(arguments, 1)
+        if source
+          for prop of source
+            obj[prop] = source[prop]
+      return obj
+
     ## -------------- public methods -------------- 
+
+    # set FPS
+    @setFPS = (_FPS) -> FPS = _FPS
 
     # set looping
     @setLooping = (_looping) -> looping = _looping
@@ -127,6 +168,9 @@ jQuery ->
 
     # set the animations
     @setAnimations = (_animations) -> animations = _animations
+
+    # get FPS
+    @getFPS = -> FPS
 
     # get looping
     @getLooping = -> looping
@@ -153,8 +197,13 @@ jQuery ->
     @init = ->
       @settings = $.extend( {}, @defaults, options )
       @setLooping @getSetting("looping")
+      @setFPS @getSetting("FPS")
 
       initAnimations()
+
+      ani = @$el.data('ani');
+      if (ani)
+          ani.play()
 
       @setState 'ready'
 

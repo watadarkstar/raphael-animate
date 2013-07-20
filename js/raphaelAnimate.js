@@ -1,7 +1,7 @@
 (function() {
   jQuery(function() {
     $.raphaelAnimate = function(el, options) {
-      var animations, bind, getAnimation, has, initAnimations, isFunction, key, log, looping, play, state, step, step_once,
+      var FPS, animations, bind, extend, getAnimation, has, initAnimations, isFunction, key, log, looping, play, state, step, step_once,
         _this = this;
       $.raphaelAnimate.prototype.defaults = {
         FPS: 50,
@@ -11,9 +11,10 @@
         looping: true
       };
       state = '';
+      FPS = 50;
       animations = {};
       looping = true;
-      key = "animation1";
+      key = "";
       this.settings = {};
       this.$el = $(el);
       initAnimations = function() {
@@ -22,7 +23,7 @@
         _this.setKey(_this.getSetting("key"));
         $el = _this.$el;
         if (has(animations, key)) {
-          $el.data('initialized', true);
+          $el.data('initialized', true).addClass('replaced');
           ani = getAnimation(key);
           ani.nFrames = 0;
           _ref = ani.layers;
@@ -38,11 +39,7 @@
           ani.lastFrame = 0;
           ani.tick = 0;
           ani.looping = looping;
-          if (ani.looping) {
-            $el.addClass('looping');
-          } else {
-            $el.addClass('play-once');
-          }
+          $el.addClass('looping-' + ani.looping);
           ani.step_once = bind(step_once, ani);
           ani.step = bind(step, ani);
           ani.play = bind(play, ani);
@@ -59,9 +56,49 @@
       getAnimation = function(key) {
         return animations[key];
       };
-      step_once = function() {};
-      step = function(timestamp) {};
-      play = function() {};
+      step_once = function() {
+        var attrs, i, layer, self, shape, _i, _j, _len, _len1, _ref, _ref1;
+        self = this;
+        _ref = this.layers;
+        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+          layer = _ref[i];
+          if (layer.frames[self.tick]) {
+            layer.paper.clear();
+            _ref1 = layer.frames[self.tick];
+            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+              shape = _ref1[_j];
+              attrs = extend({
+                "stroke-width": "0",
+                "stroke": "none"
+              }, shape.attrs);
+              layer.paper.path(shape.path).attr(attrs).transform("s.70 .70 200 5");
+            }
+          }
+        }
+        this.tick++;
+        if (this.tick > (this.nFrames - 1)) {
+          this.tick = 0;
+          if (!this.looping) {
+            this.playing = false;
+            this.finished = true;
+          }
+        }
+        return this.lastFrame = Date.now();
+      };
+      step = function(timestamp) {
+        var now;
+        now = Date.now();
+        if ((now - this.lastFrame) > (1000 / FPS)) {
+          this.step_once();
+        }
+        if (this.playing) {
+          return requestAnimationFrame(this.step);
+        }
+      };
+      play = function() {
+        this.playing = true;
+        return requestAnimationFrame(this.step);
+      };
       log = function(msg) {
         if (_this.getSetting("debug")) {
           return console.log(msg);
@@ -99,6 +136,23 @@
           return self;
         };
       };
+      extend = function(obj) {
+        var prop, slice, source, _i, _len, _ref;
+        slice = Array.prototype.slice;
+        _ref = slice.call(arguments, 1);
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          source = _ref[_i];
+          if (source) {
+            for (prop in source) {
+              obj[prop] = source[prop];
+            }
+          }
+        }
+        return obj;
+      };
+      this.setFPS = function(_FPS) {
+        return FPS = _FPS;
+      };
       this.setLooping = function(_looping) {
         return looping = _looping;
       };
@@ -110,6 +164,9 @@
       };
       this.setAnimations = function(_animations) {
         return animations = _animations;
+      };
+      this.getFPS = function() {
+        return FPS;
       };
       this.getLooping = function() {
         return looping;
@@ -133,9 +190,15 @@
         return this.settings[name].apply(this, args);
       };
       this.init = function() {
+        var ani;
         this.settings = $.extend({}, this.defaults, options);
         this.setLooping(this.getSetting("looping"));
+        this.setFPS(this.getSetting("FPS"));
         initAnimations();
+        ani = this.$el.data('ani');
+        if (ani) {
+          ani.play();
+        }
         return this.setState('ready');
       };
       this.init();
