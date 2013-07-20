@@ -1,0 +1,36 @@
+{
+  "name"            : "miniboilerplate",
+  "title"           : "MiniBoilerplate",
+  "version"         : "1.2.0",
+  "homepage"        : "http://miniboilerplate.com",
+  "author"          : {
+    "name"  : "Matthieu Aussaguel",
+    "email" : "matthieu.aussaguel@gmail.com",
+    "url"   : "http://mynameismatthieu.com"
+  },
+  "repository" : {
+    "type" : "git",
+    "url"  : "git://github.com/miniJs/miniBoilerplate.git"
+  },
+  "description" : "Looking to create a jQuery plugin in CoffeeScript using Test-driven development? If so, MiniBoilerplate is what you've been looking for.",
+  "keywords": ["development", "workflow", "rapid", "test", "jasmine", "jquery", "plugin", "headless", "javascript", "coffeescript", "guard", "boilerplate", "default", "toolkit", "base"],
+  "bugs" : {
+    "url" : "https://github.com/miniJs/miniBoilerplate/issues"
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url" : "http://matthieuaussaguel.mit-license.org/"
+  }],
+  "devDependencies" : {
+    "grunt"                : "0.4.1",
+    "grunt-cli"            : "0.1.9",
+    "grunt-contrib-watch"  : "0.4.4",
+    "grunt-contrib-coffee" : "0.7.0",
+    "grunt-contrib-jasmine": "0.4.2",
+    "grunt-contrib-uglify" : "0.2.2",
+    "grunt-growl"          : "0.1.5"
+  },
+  "scripts": {
+    "test": "grunt travis"
+  }
+}
