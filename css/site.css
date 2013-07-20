@@ -1,7 +1,10 @@
 body {
   font-family: helvetica,'Georgia',arial,sans-serif;
-  background-color: #fafbf1;
   color: #3C3C3C;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  margin: 0;
 }
 
 h1 {
@@ -20,4 +23,16 @@ h1 strong {
 #container {
   width: 980px;
   margin:  0 auto;
+}
+
+#logo, .dynamic-canvas, svg {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+#logo, svg {
+  padding-top: 50px;
+  width: intrinsic;
+  margin: 0 auto;
 }

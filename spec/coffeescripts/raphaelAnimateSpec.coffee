@@ -1,4 +1,4 @@
-describe 'PluginName', ->
+describe 'RaphaelAnimate', ->
   options =
     message: 'Hello World'
 
@@ -8,24 +8,24 @@ describe 'PluginName', ->
 
   describe 'plugin behavior', ->
     it 'should be available on the jQuery object', ->
-      expect( $.fn.pluginName ).toBeDefined()
+      expect( $.fn.raphaelAnimate ).toBeDefined()
 
     it 'should be chainable', ->
-      expect( @$element.pluginName() ).toBe @$element
+      expect( @$element.raphaelAnimate() ).toBe @$element
 
     it 'should offers default values', ->
-      plugin = new $.pluginName( @$element )
+      plugin = new $.raphaelAnimate( @$element )
 
       expect( plugin.defaults ).toBeDefined()
 
     it 'should overwrites the settings', ->
-      plugin = new $.pluginName( @$element, options )
+      plugin = new $.raphaelAnimate( @$element, options )
 
       expect( plugin.settings.message ).toBe( options.message )
 
   describe 'plugin state', ->
     beforeEach ->
-      @plugin = new $.pluginName( @$element )
+      @plugin = new $.raphaelAnimate( @$element )
 
     it 'should have a ready state', ->
       expect( @plugin.getState() ).toBe 'ready'
