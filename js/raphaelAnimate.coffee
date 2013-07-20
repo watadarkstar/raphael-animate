@@ -1,7 +1,7 @@
 #
 # Name    : Raphael Animate
 # Author  : Adrian Carolli, www.twitter.com/wataweb, @wataweb
-# Version : 0.1
+# Version : 0.0.1
 # Repo    : https://github.com/watadarkstar/raphael-animate
 # Website : www.twitter.com/wataweb
 #

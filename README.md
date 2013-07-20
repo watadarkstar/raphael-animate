@@ -1,10 +1,10 @@
-# [Raphael Animate jQuery Plugin](http://twitter.com/wataweb) [![Build Status](https://secure.travis-ci.org/miniJs/miniBoilerplate.png?branch=master)](http://travis-ci.org/miniJs/miniBoilerplate)
+# [Raphael Animate jQuery Plugin](http://twitter.com/wataweb) [![Build Status](https://secure.travis-ci.org/watadarkstar/raphael-animate.png?branch=master)](http://travis-ci.org/watadarkstar/raphael-animate)
 
 jQuery Animation Plugin written in CoffeeScript to help you create animations in a clean and quick way.
 
 ## Version
 
-v0.1 Develop
+v0.0.1 Develop
 
 ## Dev Commands
 
