@@ -36,13 +36,17 @@ Build and minify plugin:
 
 	grunt build
 
+Running Test Scirpt (for Travis CI)
+
+	npm test
+
 ## Website Url
 
 No URL
 
 ## Bug tracker
 
-If you find a bug, please raise it the [issue here](https://github.com/watadarkstar/raphael-animate/issues) on Github! 
+If you find a bug, please raise it [here](https://github.com/watadarkstar/raphael-animate/issues) on Github! 
 
 ## Technologies Used
 + [Raphael](http://raphaeljs.com/)

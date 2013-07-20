@@ -1,25 +1,25 @@
 {
-  "name"            : "miniboilerplate",
-  "title"           : "MiniBoilerplate",
-  "version"         : "1.2.0",
-  "homepage"        : "http://miniboilerplate.com",
+  "name"            : "raphaelanimate",
+  "title"           : "RaphaelAnimate",
+  "version"         : "0.1",
+  "homepage"        : "http://twitter.com/wataweb",
   "author"          : {
-    "name"  : "Matthieu Aussaguel",
-    "email" : "matthieu.aussaguel@gmail.com",
-    "url"   : "http://mynameismatthieu.com"
+    "name"  : "Adrian Carolli",
+    "email" : "adrian.caarolli@gmail.com",
+    "url"   : "http://twitter.com/wataweb"
   },
   "repository" : {
     "type" : "git",
-    "url"  : "git://github.com/miniJs/miniBoilerplate.git"
+    "url"  : "git://github.com/watadarkstar/raphael-animate.git.git"
   },
-  "description" : "Looking to create a jQuery plugin in CoffeeScript using Test-driven development? If so, MiniBoilerplate is what you've been looking for.",
-  "keywords": ["development", "workflow", "rapid", "test", "jasmine", "jquery", "plugin", "headless", "javascript", "coffeescript", "guard", "boilerplate", "default", "toolkit", "base"],
+  "description" : "jQuery Animation Plugin written in CoffeeScript to help you create animations in a clean and quick way using Raphael JS.",
+  "keywords": ["development", "raphael", "js", "javascript", "jasmine", "jquery", "plugin", "headless", "javascript", "coffeescript", "animations", "animation", "animate", "wrapper", "rappar"],
   "bugs" : {
-    "url" : "https://github.com/miniJs/miniBoilerplate/issues"
+    "url" : "https://github.com/watadarkstar/raphael-animate/issues"
   },
   "licenses": [{
     "type": "MIT",
-    "url" : "http://matthieuaussaguel.mit-license.org/"
+    "url" : "https://github.com/watadarkstar/raphael-animate"
   }],
   "devDependencies" : {
     "grunt"                : "0.4.1",
