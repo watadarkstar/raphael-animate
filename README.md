@@ -21,6 +21,7 @@ If you find a bug, please raise it the [issue here](https://github.com/watadarks
 + [Raphael](http://raphaeljs.com/)
 + [Rappar](https://github.com/DmitryBaranovskiy/rappar)
 + [CoffeScript](http://coffeescript.org/)
++ [MiniBoilerplate](http://miniboilerplate.com/)
 
 ## Resources
 + [Raphael vs Paper vs Processing](http://coding.smashingmagazine.com/2012/02/22/web-drawing-throwdown-paper-processing-raphael/)
