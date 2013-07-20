@@ -1,13 +1,26 @@
-# [Raphael Animate jQuery Plugin](http://mywata.com) [![Build Status](https://secure.travis-ci.org/miniJs/miniBoilerplate.png?branch=master)](http://travis-ci.org/miniJs/miniBoilerplate)
+# [Raphael Animate jQuery Plugin](http://twitter.com/wataweb) [![Build Status](https://secure.travis-ci.org/miniJs/miniBoilerplate.png?branch=master)](http://travis-ci.org/miniJs/miniBoilerplate)
 
-jQuery Plugin Boilerplate written in CoffeeScript to help you create plugins in a clean and quick way.
+jQuery Animation Plugin written in CoffeeScript to help you create animations in a clean and quick way.
 
 ## Version
 
 v0.1 Develop
 
 ## Dev Commands
-	coffee -o scripts/ -cw coffee/
+Clone Repo
+	git clone git@github.com:watadarkstar/raphael-animate.git
+Install needed libraries
+	npm install
+Compile CoffeeScript
+	grunt coffee
+Run test suite in the terminal (headless)
+	grunt jasmine
+Compile CoffeeScript and run tests suite
+	grunt
+Compile CoffeeScript and run tests suite whenever files change (recommended)
+	grunt watch
+Build and minify plugin
+	grunt build
 
 ## Website Url
 
