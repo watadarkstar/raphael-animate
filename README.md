@@ -7,19 +7,33 @@ jQuery Animation Plugin written in CoffeeScript to help you create animations in
 v0.1 Develop
 
 ## Dev Commands
-Clone Repo
+
+Clone Repo:
+
 	git clone git@github.com:watadarkstar/raphael-animate.git
-Install needed libraries
+
+Install needed libraries:
+
 	npm install
-Compile CoffeeScript
+
+Compile CoffeeScript:
+
 	grunt coffee
-Run test suite in the terminal (headless)
+
+Run test suite in the terminal (headless):
+
 	grunt jasmine
-Compile CoffeeScript and run tests suite
+
+Compile CoffeeScript and run tests suite:
+
 	grunt
-Compile CoffeeScript and run tests suite whenever files change (recommended)
+
+Compile CoffeeScript and run tests suite whenever files change (recommended):
+
 	grunt watch
-Build and minify plugin
+
+Build and minify plugin:
+
 	grunt build
 
 ## Website Url
