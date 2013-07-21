@@ -142,6 +142,14 @@
             });
           });
         });
+        _this.$el.click(function(e) {
+          var $el, ani;
+          $el = $(e.currentTarget);
+          ani = $el.data('ani');
+          if (ani) {
+            return ani.play();
+          }
+        });
         return $(window).on('statechangecomplete', function() {});
       };
       log = function(msg) {

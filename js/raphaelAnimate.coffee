@@ -148,6 +148,12 @@ jQuery ->
           $el.css
             webkitAnimation: "none"
 
+      @$el.click (e) => 
+        $el = $(e.currentTarget);
+        ani = $el.data('ani')
+        if (ani) 
+          ani.play();
+
       $(window).on 'statechangecomplete', =>
 
     ## -------------- helper methods --------------
