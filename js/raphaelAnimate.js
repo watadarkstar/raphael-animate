@@ -36,7 +36,6 @@
             ani.nFrames = Math.max(ani.nFrames, layer.frames.length);
           }
           ani.playing = false;
-          ani.finished = false;
           ani.lastFrame = 0;
           ani.tick = 0;
           ani.looping = looping;
@@ -61,14 +60,13 @@
         return animations[key];
       };
       step_once = function() {
-        var attrs, i, layer, self, shape, _i, _j, _len, _len1, _ref, _ref1;
-        self = this;
+        var attrs, i, layer, shape, _i, _j, _len, _len1, _ref, _ref1;
         _ref = this.layers;
         for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
           layer = _ref[i];
-          if (layer.frames[self.tick]) {
+          if (layer.frames[this.tick]) {
             layer.paper.clear();
-            _ref1 = layer.frames[self.tick];
+            _ref1 = layer.frames[this.tick];
             for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
               shape = _ref1[_j];
               attrs = $.extend({
@@ -84,7 +82,6 @@
           this.tick = 0;
           if (!this.looping) {
             this.playing = false;
-            this.finished = true;
           }
         }
         return this.lastFrame = Date.now();

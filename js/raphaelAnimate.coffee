@@ -59,7 +59,6 @@ jQuery ->
           ani.nFrames = Math.max(ani.nFrames, layer.frames.length);
 
         ani.playing = false
-        ani.finished = false
         ani.lastFrame = 0
         ani.tick = 0
 
@@ -89,12 +88,10 @@ jQuery ->
     step_once = ->
       # only draw a frame if the data exists
       # it's possible that the frame is null, in which case we're just holding the previous frame
-      self = this
-
       for layer, i in this.layers
-        if (layer.frames[self.tick])
+        if (layer.frames[this.tick])
           layer.paper.clear()
-          for shape in layer.frames[self.tick]
+          for shape in layer.frames[this.tick]
             attrs = $.extend({"stroke-width":"0","stroke":"none"}, if shape.attrs? then shape.attrs else shape)
             layer.paper
                   .path(shape.path)
@@ -105,7 +102,6 @@ jQuery ->
         this.tick = 0;
         if !this.looping
           this.playing = false;
-          this.finished = true;
 
       this.lastFrame = Date.now();
 
